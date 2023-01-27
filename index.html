@@ -8,11 +8,14 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
         <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
         <link rel="stylesheet" href="css/leaflet-measure.css">
         <style>
-        #map {
-            width: 1326px;
-            height: 869px;
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
         }
         </style>
         <title></title>
@@ -29,6 +32,7 @@
         <script src="js/rbush.min.js"></script>
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
         <script src="js/leaflet-measure.js"></script>
         <script src="data/Faults_1.js"></script>
         <script>
@@ -50,7 +54,7 @@
         }
         var map = L.map('map', {
             zoomControl:true, maxZoom:10, minZoom:1
-        }).fitBounds([[12.13359979629772,-91.89314404112639],[16.328237286186184,-85.48749232646395]]);
+        }).fitBounds([[13.55842187331289,-93.32451068724276],[17.753059363201352,-86.84287446255723]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -70,15 +74,15 @@
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
         }
-        map.createPane('pane_ca_relieve_modificato_0');
-        map.getPane('pane_ca_relieve_modificato_0').style.zIndex = 400;
-        var img_ca_relieve_modificato_0 = 'data/ca_relieve_modificato_0.png';
-        var img_bounds_ca_relieve_modificato_0 = [[2.922165833389162,-95.48615948773016],[19.38918322756803,-73.96172566958712]];
-        var layer_ca_relieve_modificato_0 = new L.imageOverlay(img_ca_relieve_modificato_0,
-                                              img_bounds_ca_relieve_modificato_0,
-                                              {pane: 'pane_ca_relieve_modificato_0'});
-        bounds_group.addLayer(layer_ca_relieve_modificato_0);
-        map.addLayer(layer_ca_relieve_modificato_0);
+        map.createPane('pane_CentralAmericaDEM_0');
+        map.getPane('pane_CentralAmericaDEM_0').style.zIndex = 400;
+        var img_CentralAmericaDEM_0 = 'data/CentralAmericaDEM_0.png';
+        var img_bounds_CentralAmericaDEM_0 = [[2.922165833389162,-95.48615948773016],[19.38918322756803,-73.96172566958712]];
+        var layer_CentralAmericaDEM_0 = new L.imageOverlay(img_CentralAmericaDEM_0,
+                                              img_bounds_CentralAmericaDEM_0,
+                                              {pane: 'pane_CentralAmericaDEM_0'});
+        bounds_group.addLayer(layer_CentralAmericaDEM_0);
+        map.addLayer(layer_CentralAmericaDEM_0);
         function pop_Faults_1(feature, layer) {
             layer.on({
                 mouseout: function(e) {
@@ -200,8 +204,18 @@
         });
         bounds_group.addLayer(layer_Faults_1);
         map.addLayer(layer_Faults_1);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
         var baseMaps = {};
-        L.control.layers(baseMaps,{'Faults<br /><table><tr><td style="text-align: center;"><img src="legend/Faults_1_Active0.png" /></td><td>Active</td></tr><tr><td style="text-align: center;"><img src="legend/Faults_1_Seismogenic1.png" /></td><td>Seismogenic</td></tr></table>': layer_Faults_1,"ca_relieve_modificato": layer_ca_relieve_modificato_0,}).addTo(map);
+        L.control.layers(baseMaps,{'Faults<br /><table><tr><td style="text-align: center;"><img src="legend/Faults_1_Active0.png" /></td><td>Active</td></tr><tr><td style="text-align: center;"><img src="legend/Faults_1_Seismogenic1.png" /></td><td>Seismogenic</td></tr></table>': layer_Faults_1,"Central America DEM": layer_CentralAmericaDEM_0,}).addTo(map);
         map.on("zoomend", function(){
 
                 if (map.hasLayer(layer_Faults_1)) {
